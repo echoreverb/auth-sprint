@@ -1,22 +1,23 @@
 const mongoose = require('mongoose');
 const validatorCheck = require('validator');
+const validatorMessage = require('../libs/validatormessage');
 
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
-    minlength: 2,
-    maxlength: 30,
+    required: validatorMessage.required,
+    minlength: validatorMessage.minLength(2),
+    maxlength: validatorMessage.maxLength(30),
   },
   about: {
     type: String,
-    required: true,
-    minlength: 2,
-    maxlength: 30,
+    required: validatorMessage.required,
+    minlength: validatorMessage.minLength(2),
+    maxlength: validatorMessage.maxLength(30),
   },
   avatar: {
     type: String,
-    required: true,
+    required: validatorMessage.required,
     validate: {
       validator(v) {
         return validatorCheck.isURL(v);
