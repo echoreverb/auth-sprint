@@ -25,6 +25,21 @@ const userSchema = new mongoose.Schema({
       message: (props) => `${props.value} - вместо этого должна быть ссылка на изображение!`,
     },
   },
+  email: {
+    type: String,
+    required: validatorMessage.required,
+    validate: {
+      validator(v) {
+        return validatorCheck.isEmail(v);
+      },
+      message: (props) => `${props.value} - вместо этого должен быть корректный email`,
+    },
+  },
+  password: {
+    type: String,
+    required: validatorMessage.required,
+    minlength: validatorMessage.minLength(8),
+  },
 });
 
 module.exports = mongoose.model('user', userSchema);
