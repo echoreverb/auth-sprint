@@ -1,10 +1,17 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
 const createUser = async (req, res) => {
-  const { name, about, avatar } = req.body;
+  const {
+    name, about, avatar, email, password,
+  } = req.body;
   try {
-    const created = await User.create({ name, about, avatar });
+    const hash = await bcrypt.hash(password, 10);
+    const created = await User.create({
+      name, about, avatar, email, password: hash,
+    });
     res.json({ data: created });
   } catch (e) {
     if (e.name === 'ValidationError') {
@@ -81,10 +88,22 @@ const updateAvatar = async (req, res) => {
   }
 };
 
+const login = async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const user = await User.findUserByCredentials(email, password);
+    const token = jwt.sign({ _id: user._id }, 'super-secret', { expiresIn: '7d' });
+    res.cookie('jwt', token, { httpOnly: true, maxAge: (7 * 24 * 3600000) });
+  } catch (e) {
+    res.status(401).send({ message: e.message });
+  }
+};
+
 module.exports = {
   createUser,
   getUsers,
   getUserById,
   updateUser,
   updateAvatar,
+  login,
 };
