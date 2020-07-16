@@ -92,7 +92,7 @@ const login = async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await User.findUserByCredentials(email, password);
-    const token = jwt.sign({ _id: user._id }, 'super-secret', { expiresIn: '7d' });
+    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET || 'secret-key', { expiresIn: '7d' });
     res.cookie('jwt', token, { httpOnly: true, maxAge: (7 * 24 * 3600000) });
     res.status(201).send({ message: `Привет, ${user.name}!` });
   } catch (e) {
