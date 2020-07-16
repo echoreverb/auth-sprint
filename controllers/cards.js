@@ -18,8 +18,7 @@ const createCard = async (req, res) => {
 
 const getCards = async (req, res) => {
   try {
-    const cards = await Card.find({})
-      .orFail();
+    const cards = await Card.find({}).orFail();
     res.json({ data: cards });
   } catch (e) {
     if (e.name === 'DocumentNotFoundError') {
@@ -36,14 +35,19 @@ const deleteCard = async (req, res) => {
     return;
   }
   try {
-    const deleted = await Card.deleteOne({ _id: req.params.cardId });
-    if (deleted.deletedCount === 0) {
-      res.status(404).send({ message: 'Карточки с таким cardId не существует' });
+    const found = await Card.findById({ _id: req.params.cardId }).orFail();
+    if (req.user._id !== found.owner.toString()) {
+      res.status(403).send({ message: 'Вы можете удалять только свои карточки' });
       return;
     }
+    await Card.deleteOne({ _id: req.params.cardId }).orFail();
     res.json({ message: 'Карточка удалена' });
   } catch (e) {
-    res.status(500).send({ message: 'Ошибка при удалении карточки' });
+    if (e.name === 'DocumentNotFoundError') {
+      res.status(404).send({ message: 'Не найдена карточка' });
+      return;
+    }
+    res.status(500).send({ message: e.message });
   }
 };
 
