@@ -24,8 +24,7 @@ const createUser = async (req, res) => {
 
 const getUsers = async (req, res) => {
   try {
-    const users = await User.find({})
-      .orFail();
+    const users = await User.find({}).orFail();
     res.json({ data: users });
   } catch (e) {
     if (e.name === 'DocumentNotFoundError') {
@@ -42,8 +41,7 @@ const getUserById = async (req, res) => {
     return;
   }
   try {
-    const user = await User.findById(req.params.userId)
-      .orFail();
+    const user = await User.findById(req.params.userId).orFail();
     res.json({ data: user });
   } catch (e) {
     if (e.name === 'DocumentNotFoundError') {
