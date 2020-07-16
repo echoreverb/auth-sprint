@@ -96,7 +96,11 @@ const login = async (req, res) => {
     res.cookie('jwt', token, { httpOnly: true, maxAge: (7 * 24 * 3600000) });
     res.status(201).send({ message: `Привет, ${user.name}!` });
   } catch (e) {
-    res.status(401).send({ message: e.message });
+    if (e.message === 'Неправильные почта или пароль') {
+      res.status(401).send({ message: e.message });
+      return;
+    }
+    res.status(500).send({ message: e.message });
   }
 };
 
