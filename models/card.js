@@ -1,16 +1,17 @@
 const mongoose = require('mongoose');
 const validatorCheck = require('validator');
+const validatorMessage = require('../libs/validatormessage');
 
 const cardSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
-    minlength: 2,
-    maxlength: 30,
+    required: validatorMessage.required,
+    minlength: validatorMessage.minLength(2),
+    maxlength: validatorMessage.maxLength(30),
   },
   link: {
     type: String,
-    required: true,
+    required: validatorMessage.required,
     validate: {
       validator(v) {
         return validatorCheck.isURL(v);
@@ -21,7 +22,7 @@ const cardSchema = new mongoose.Schema({
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
-    required: true,
+    required: validatorMessage.required,
   },
   likes: {
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'user' }],
