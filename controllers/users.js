@@ -12,7 +12,15 @@ const createUser = async (req, res) => {
     const created = await User.create({
       name, about, avatar, email, password: hash,
     });
-    res.json({ data: created });
+    res.json({
+      data:
+      {
+        name: created.name,
+        about: created.about,
+        avatar: created.avatar,
+        email: created.email,
+      },
+    });
   } catch (e) {
     if (e.name === 'ValidationError') {
       res.status(400).send({ message: e.message });
