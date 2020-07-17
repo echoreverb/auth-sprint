@@ -1,10 +1,10 @@
 # Проектная работа #14
 
-> В этой работе роуты проекта Mesto защищаются авторизацией с помощью [jwt](https://www.npmjs.com/package/jsonwebtoken), [bcrypt](https://www.npmjs.com/package/bcrypt).
+> В этой работе роуты проекта Mesto защищаются авторизацией с помощью [jwt](https://www.npmjs.com/package/jsonwebtoken), [bcrypt](https://www.npmjs.com/package/bcrypt), [helmet](https://helmetjs.github.io).
 
 ## Ссылка на скачивание
 
-> [v0.0.1](https://github.com/echoreverb/auth-sprint)
+> [v0.0.2](https://github.com/echoreverb/auth-sprint)
 
 ## Установка
 
